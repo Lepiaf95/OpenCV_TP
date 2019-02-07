@@ -21,12 +21,16 @@ int main()
 			if (frame.empty())
 				cout << "Cette image est vide !" << endl;
 
-			// Partie 1
+
+			// Partie 1 : Segmentation couleur de l'image pour la reconnaissance d'objet
+
 			resize(frame, frame, Size(340,480),0,0, INTER_LINEAR); // Interpolation linéaire
 			cvtColor(frame, frame_hsv, COLOR_BGR2HSV); // HSV = TSL
 			inRange(frame_hsv, Scalar(170, 160, 60), Scalar(180, 255, 255), frame_hsv); // la couleur rouge
 			
-			// Partie 2
+
+			// Partie 2 : Détection d'objet et reconstitution de la forme
+
 			morphologyEx(frame_hsv, frame_close, MORPH_CLOSE, kernel, Point(3, 3));
 			Canny(frame_close, frame_canny, 100, 200, 3);
 			dilate(frame_canny, frame_contour, kernel, Point(3, 3));
@@ -41,7 +45,9 @@ int main()
 			}
 
 
-			// Partie 3
+			// Partie 3 : Affinage de la détection pour le suivi robuste
+
+
 
 
 			imshow("video", frame);
